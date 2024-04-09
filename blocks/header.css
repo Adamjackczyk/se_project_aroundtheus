@@ -12,4 +12,20 @@
 .header__line {
   padding-top: 41px;
   border-bottom: 1px solid white;
+  opacity: 30%;
+}
+
+@media screen and (max-width: 480px) {
+  .header {
+    padding-top: 27px;
+  }
+
+  .header__logo {
+    width: 126px;
+    height: 24px;
+  }
+
+  .header__line {
+    padding-top: 32px;
+  }
 }

@@ -1,9 +1,14 @@
 .page {
   color: white;
   background-color: black;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+}
+
+.page__content {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  margin: 0 auto;
 }
 
 .page__section {
@@ -11,4 +16,11 @@
   width: 100%;
   position: relative;
   margin: 0 auto;
+}
+
+@media screen and (max-width: 920px) {
+  .page__section {
+    margin: 0 20px 0;
+    max-width: calc(100% - 40px);
+  }
 }
