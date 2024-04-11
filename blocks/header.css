@@ -27,3 +27,15 @@
     height: 24px;
   }
 }
+
+@media screen and (max-width: 320px) {
+  .header {
+    margin: 0;
+    padding: 27px 0 0 0;
+    max-width: 100%;
+  }
+
+  .header__logo {
+    padding: 0 0 0 27px;
+  }
+}
