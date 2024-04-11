@@ -2,8 +2,8 @@
   padding-top: 45px;
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
-  height: 70px;
+  border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+  padding-bottom: 41px;
 }
 
 .header__logo {
@@ -14,7 +14,7 @@
 @media screen and (max-width: 480px) {
   .header {
     padding-top: 27px;
-    height: 55px;
+    padding-bottom: 32px;
 
     width: 100%;
     padding-top: 28px;
@@ -31,7 +31,7 @@
 @media screen and (max-width: 320px) {
   .header {
     margin: 0;
-    padding: 27px 0 0 0;
+    padding: 27px 0 32px 0;
     max-width: 100%;
   }
 
