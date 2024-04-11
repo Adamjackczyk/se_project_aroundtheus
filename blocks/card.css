@@ -1,7 +1,6 @@
 .card__grid {
   font-family: Inter, Arial, Helvetica, sans-serif;
   font-weight: 900;
-  margin-top: 30px;
 }
 
 .card {
@@ -63,5 +62,9 @@
 @media screen and (max-width: 765px) {
   .card__list {
     padding-top: 0;
+  }
+
+  .card__grid {
+    margin-top: 36px;
   }
 }
