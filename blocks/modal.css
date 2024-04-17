@@ -1,0 +1,134 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 69;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 19px;
+}
+
+.modal__opened {
+  display: flex;
+}
+
+.modal__container {
+  padding: 36px;
+  position: relative;
+  background-color: white;
+  border-radius: 10px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  width: 430px;
+  max-height: 330px;
+}
+
+.modal__close {
+  background-image: url("../images/Close\ button.svg");
+  position: absolute;
+  cursor: pointer;
+  bottom: calc(100% + 5px);
+  left: calc(100% + 5px);
+  border: none;
+  background-color: transparent;
+  width: 40px;
+  height: 40px;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.modal__close:hover {
+  opacity: 0.6;
+}
+
+.modal__heading {
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  width: calc(100% - 30px);
+  height: 23px;
+  line-height: 23px;
+  font-weight: 900;
+  font-size: 24px;
+  margin: 0;
+  margin-bottom: 55px;
+  color: black;
+}
+
+.modal__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal__form input[type="text"] {
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  line-height: 15px;
+  font-size: 14px;
+  height: 27px;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+  color: #000;
+}
+
+.modal__button {
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  line-height: 22px;
+  font-size: 18px;
+  padding: 15px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 18px;
+}
+
+.modal__button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+@media screen and (max-width: 620px) {
+  .modal__close {
+    bottom: calc(100% + 20px);
+    left: calc(100% - 40px);
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .modal__close {
+    bottom: calc(100% + 14px);
+    left: calc(100% - 26px);
+    width: 26px;
+    height: 26px;
+  }
+
+  .modal__heading {
+    font-size: 18px;
+    margin-bottom: 75px;
+  }
+
+  .modal__button {
+    margin-top: 15px;
+    line-height: 17px;
+  }
+
+  .modal__container {
+    padding: 25px;
+    position: relative;
+    background-color: white;
+    border-radius: 10px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    width: 282px;
+    max-height: 322px;
+  }
+}
