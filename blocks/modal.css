@@ -12,7 +12,7 @@
   padding: 0 19px;
 }
 
-.modal__opened {
+.modal_opened {
   display: flex;
 }
 
@@ -118,6 +118,7 @@
   .modal__button {
     margin-top: 15px;
     line-height: 17px;
+    font-size: 14px;
   }
 
   .modal__container {
