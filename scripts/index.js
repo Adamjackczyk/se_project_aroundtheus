@@ -51,6 +51,14 @@ const cardTitleInput = document.getElementById("card-title-input");
 const cardLinkInput = document.getElementById("card-link-input");
 const addCardExitBtn = document.getElementById("add-card-exit-button");
 
+const modalImageDisplay = document.querySelector("#modal-image-display");
+const previewImageElement = document.querySelector(".modal__image");
+const previewImageLabel = document.querySelector(".modal__image-label");
+const modalOverlay = document.querySelector(".modal");
+const modalImageCloseButton = modalImageDisplay.querySelector(
+  "#modal-image-close-button"
+);
+
 /*
  * ==============================================================================
  * Functions
@@ -80,6 +88,13 @@ function getCardElement(cardData) {
   cardImageEl.src = cardData.link;
   cardImageEl.alt = cardData.name;
 
+  cardImageEl.addEventListener("click", () => {
+    previewImageElement.src = cardData.link;
+    previewImageElement.alt = cardData.name;
+    previewImageLabel.textContent = cardData.name;
+    openModal(modalImageDisplay);
+  });
+
   return cardElement;
 }
 
@@ -89,6 +104,14 @@ function openAddCardModal() {
 
 function closeAddCardModal() {
   addCardModal.classList.remove("modal_opened");
+}
+
+function openModal(modal) {
+  modal.classList.add("modal_opened");
+}
+
+function closeModal(modal) {
+  modal.classList.remove("modal_opened");
 }
 
 /*
@@ -138,3 +161,11 @@ initialCards.forEach((cardData) => {
 addCardBtn.addEventListener("click", openAddCardModal);
 addCardExitBtn.addEventListener("click", closeAddCardModal);
 addCardForm.addEventListener("submit", handleAddCardSubmit);
+
+modalImageCloseButton.addEventListener("click", () =>
+  closeModal(modalImageDisplay)
+);
+
+modalOverlay.addEventListener("click", function () {
+  closeModal(modalImageDisplay);
+});
