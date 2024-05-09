@@ -157,7 +157,7 @@
     font-size: 14px;
   }
 
-  .modal__container {
+  /* .modal__container {
     padding: 25px;
     position: relative;
     background-color: white;
@@ -167,5 +167,5 @@
     flex-direction: column;
     width: 282px;
     max-height: 322px;
-  }
+  } */
 }
