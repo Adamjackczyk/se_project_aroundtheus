@@ -44,7 +44,7 @@
 }
 
 .card__delete-button {
-  background: transparent url(/images/Trash\ hover.svg);
+  background: transparent url(../images/trashHover.svg);
   position: absolute;
   top: 18px;
   right: 15px;
@@ -60,7 +60,7 @@
 }
 
 .card__like-button_active {
-  background-image: url(/images/Union.svg);
+  background-image: url(../images/Union.svg);
 }
 
 .card__like-button:hover {
