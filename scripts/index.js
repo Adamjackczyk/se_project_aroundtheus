@@ -103,6 +103,9 @@ function openAddCardModal() {
 }
 
 function closeAddCardModal() {
+  cardTitleInput.value = "";
+  cardLinkInput.value = "";
+
   addCardModal.classList.remove("modal_opened");
 }
 
