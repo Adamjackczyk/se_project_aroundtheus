@@ -35,7 +35,7 @@ const initialCards = [
 
 const profileEditBtn = document.getElementById("profile-edit-button");
 const profileExitBtn = document.getElementById("profile-exit-button");
-const profileEditModal = document.getElementById("profile-edit-motal");
+const profileEditModal = document.getElementById("profile-edit-modal");
 const profileEditTitle = document.getElementById("profile-title");
 const profileEditDescription = document.getElementById("profile-desc");
 const profileEditTitleInput = document.getElementById("profile-title-input");
