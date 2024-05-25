@@ -49,22 +49,42 @@
       <div class="modal__container">
         <button class="modal__close" id="profile-exit-button"></button>
         <p class="modal__heading">Edit Profile</p>
-        <form action="#" class="modal__form">
+        <form action="#" class="modal__form" id="edit-profile-form" novalidate>
           <input
             class="modal__input"
             type="text"
             name="title"
             placeholder="Name"
             id="profile-title-input"
+            minlength="2"
+            maxlength="40"
+            required
           />
+          <span
+            class="modal__error modal__error_visible"
+            id="profile-title-input-error"
+          ></span>
           <input
             class="modal__input"
             type="text"
             name="Description"
             placeholder="Description"
             id="profile-description-input"
+            minlength="2"
+            maxlength="200"
+            required
           />
-          <button type="submit" class="modal__button">Save</button>
+          <span
+            class="modal__error modal__error_visible"
+            id="profile-description-input-error"
+          ></span>
+          <button
+            disabled
+            type="submit"
+            class="modal__button modal__button_disabled"
+          >
+            Save
+          </button>
         </form>
       </div>
     </div>
@@ -82,15 +102,33 @@
             name="title"
             placeholder="Title"
             id="card-title-input"
+            minlength="1"
+            maxlength="30"
+            required
           />
+          <span
+            class="modal__error modal__error_visible"
+            id="card-title-input-error"
+          ></span>
           <input
             class="modal__input"
-            type="text"
+            type="url"
             name="link"
             placeholder="Image link"
             id="card-link-input"
+            required
           />
-          <button type="submit" class="modal__button">Create</button>
+          <span
+            class="modal__error modal__error_visible"
+            id="card-link-input-error"
+          ></span>
+          <button
+            disabled
+            type="submit"
+            class="modal__button modal__button_disabled"
+          >
+            Create
+          </button>
         </form>
       </div>
     </div>

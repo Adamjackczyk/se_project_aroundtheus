@@ -31,6 +31,9 @@ const initialCards = [
  * ==============================================================================
  */
 
+const modals = document.querySelectorAll(".modal");
+const modalArray = Array.from(modals);
+
 const profileEditBtn = document.getElementById("profile-edit-button");
 const profileExitBtn = document.getElementById("profile-exit-button");
 const profileEditModal = document.getElementById("profile-edit-modal");
@@ -71,6 +74,22 @@ function openPopup(popup) {
 
 function closePopup(popup) {
   popup.classList.remove("modal_opened");
+}
+
+function escapeToClose(e) {
+  if (e.key === "Escape") {
+    const openModal = document.querySelector(".modal_opened");
+    console.log(openModal);
+    closePopup(openModal);
+  }
+}
+
+function clickOffToClose(e) {
+  if (e.key === "Escape") {
+    const openModal = document.querySelector(".modal_opened");
+    console.log(openModal);
+    closePopup(openModal);
+  }
 }
 
 function getCardElement(cardData) {
@@ -147,6 +166,7 @@ profileEditForm.addEventListener("submit", handleProfileEditSubmit);
 addCardBtn.addEventListener("click", () => openPopup(addCardModal));
 addCardExitBtn.addEventListener("click", () => closePopup(addCardModal));
 addCardForm.addEventListener("submit", handleAddCardSubmit);
+window.addEventListener("keydown", escapeToClose);
 
 examineImageCloseButton.addEventListener("click", () =>
   closePopup(examineImageModalDisplay)
@@ -155,4 +175,13 @@ examineImageCloseButton.addEventListener("click", () =>
 initialCards.forEach((cardData) => {
   const cardElement = getCardElement(cardData);
   cardListEl.append(cardElement);
+});
+
+modalArray.forEach((modal) => {
+  modal.addEventListener("mousedown", (e) => {
+    if (e.target.classList.contains("modal_opened")) {
+      closePopup(modal);
+      return;
+    }
+  });
 });
