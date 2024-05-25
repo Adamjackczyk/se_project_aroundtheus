@@ -35,10 +35,6 @@ function hasInvalidInput(inputList) {
   return !inputList.every((inputElement) => inputElement.validity.valid);
 }
 
-//disable button
-
-//enable button
-
 function toggleButtonState(
   inputElements,
   submitButton,
@@ -55,11 +51,11 @@ function toggleButtonState(
 
 function setEventListeners(formElement, options) {
   // const inputSelector = options.inputSelector <-- means the same thing
-  const { inputSelector } = options;
+  const { inputSelector, submitButtonSelector } = options;
   const inputElements = [...formElement.querySelectorAll(inputSelector)];
-  const submitButton = formElement.querySelector(".modal__button");
+  const submitButton = formElement.querySelector(submitButtonSelector);
   inputElements.forEach((inputElement) => {
-    inputElement.addEventListener("input", (e) => {
+    inputElement.addEventListener("input", () => {
       checkInputValidity(formElement, inputElement, options);
       toggleButtonState(inputElements, submitButton, options);
     });

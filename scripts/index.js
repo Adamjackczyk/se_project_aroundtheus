@@ -24,7 +24,6 @@ const initialCards = [
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lago.jpg",
   },
 ];
-
 /*
  * ==============================================================================
  * Elements
@@ -68,30 +67,29 @@ const examineImageCloseButton = examineImageModalDisplay.querySelector(
  * ==============================================================================
  */
 
+// Function to open a modal and add the keydown event listener
 function openPopup(popup) {
   popup.classList.add("modal_opened");
+  document.addEventListener("keydown", closeModalByEscape);
 }
 
+// Function to close a modal and remove the keydown event listener
 function closePopup(popup) {
   popup.classList.remove("modal_opened");
+  document.removeEventListener("keydown", closeModalByEscape);
 }
 
-function escapeToClose(e) {
-  if (e.key === "Escape") {
-    const openModal = document.querySelector(".modal_opened");
-    console.log(openModal);
-    closePopup(openModal);
+// Function to close the modal when the Escape key is pressed
+function closeModalByEscape(event) {
+  if (event.key === "Escape") {
+    const openedModal = document.querySelector(".modal_opened");
+    if (openedModal) {
+      closePopup(openedModal);
+    }
   }
 }
 
-function clickOffToClose(e) {
-  if (e.key === "Escape") {
-    const openModal = document.querySelector(".modal_opened");
-    console.log(openModal);
-    closePopup(openModal);
-  }
-}
-
+// Function to create a card element
 function getCardElement(cardData) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardImageEl = cardElement.querySelector(".card__image");
@@ -126,6 +124,8 @@ function getCardElement(cardData) {
  * Event Handlers
  * ==============================================================================
  */
+
+// Handler for profile edit form submission
 function handleProfileEditSubmit(e) {
   e.preventDefault();
   profileEditTitle.textContent = profileEditTitleInput.value;
@@ -133,6 +133,7 @@ function handleProfileEditSubmit(e) {
   closePopup(profileEditModal);
 }
 
+// Handler for adding a new card
 function handleAddCardSubmit(e) {
   e.preventDefault();
   const newCardData = {
@@ -154,34 +155,40 @@ function handleAddCardSubmit(e) {
  * ==============================================================================
  */
 
+// Event listener for opening the profile edit modal
 profileEditBtn.addEventListener("click", () => {
   profileEditTitleInput.value = profileEditTitle.textContent;
   profileEditDescriptionInput.value = profileEditDescription.textContent;
   openPopup(profileEditModal);
 });
 
+// Event listener for closing the profile edit modal
 profileExitBtn.addEventListener("click", () => closePopup(profileEditModal));
 profileEditForm.addEventListener("submit", handleProfileEditSubmit);
 
+// Event listener for opening the add card modal
 addCardBtn.addEventListener("click", () => openPopup(addCardModal));
+
+// Event listener for closing the add card modal
 addCardExitBtn.addEventListener("click", () => closePopup(addCardModal));
 addCardForm.addEventListener("submit", handleAddCardSubmit);
-window.addEventListener("keydown", escapeToClose);
 
+// Event listener for closing the image modal
 examineImageCloseButton.addEventListener("click", () =>
   closePopup(examineImageModalDisplay)
 );
 
+// Initialize cards
 initialCards.forEach((cardData) => {
   const cardElement = getCardElement(cardData);
   cardListEl.append(cardElement);
 });
 
+// Event listener for closing modals by clicking outside the content
 modalArray.forEach((modal) => {
   modal.addEventListener("mousedown", (e) => {
     if (e.target.classList.contains("modal_opened")) {
       closePopup(modal);
-      return;
     }
   });
 });

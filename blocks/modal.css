@@ -106,7 +106,7 @@
   margin-top: 18px;
 }
 
-.modal__button:hover {
+.modal__button:hover:not(:disabled) {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
@@ -116,6 +116,11 @@
   color: #000000;
   opacity: 0.2;
   border-radius: 2px;
+  cursor: default;
+}
+
+.modal__button_disabled:hover {
+  background-color: #ffffff;
 }
 
 .modal__container-image {
