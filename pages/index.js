@@ -36,11 +36,13 @@ const options = {
   inputErrorClass: "modal__input_type_error",
   errorClass: "modal__error_visible",
 };
+
 /*
  * ==============================================================================
  * Function to handle image click
  * ==============================================================================
  */
+
 function handleImageClick(name, link) {
   const examineModalImage = document.querySelector(".modal__image");
   const examineImageLabel = document.querySelector(".modal__image-label");
@@ -55,14 +57,24 @@ function handleImageClick(name, link) {
 
 /*
  * ==============================================================================
+ * Function to create a card
+ * ==============================================================================
+ */
+
+function createCard(cardData) {
+  const card = new Card(cardData, "#card-template", handleImageClick);
+  return card.generateCard();
+}
+
+/*
+ * ==============================================================================
  * Initialize cards
  * ==============================================================================
  */
 
 const cardListEl = document.querySelector(".cards__list");
 initialCards.forEach((cardData) => {
-  const card = new Card(cardData, "#card-template", handleImageClick);
-  const cardElement = card.generateCard();
+  const cardElement = createCard(cardData);
   cardListEl.append(cardElement);
 });
 
@@ -72,9 +84,11 @@ initialCards.forEach((cardData) => {
  * ==============================================================================
  */
 
+const formValidators = {};
 document.querySelectorAll(options.formSelector).forEach((formElement) => {
   const formValidator = new FormValidator(options, formElement);
   formValidator.enableValidation();
+  formValidators[formElement.getAttribute("id")] = formValidator;
 });
 
 /*
@@ -140,6 +154,7 @@ profileEditBtn.addEventListener("click", () => {
   profileEditTitleInput.value = profileEditTitle.textContent;
   profileEditDescriptionInput.value = profileEditDescription.textContent;
   openPopup(profileEditModal);
+  formValidators[profileEditForm.getAttribute("id")].resetValidation();
 });
 
 /*
@@ -162,7 +177,11 @@ profileEditForm.addEventListener("submit", (e) => {
  * ==============================================================================
  */
 
-addCardBtn.addEventListener("click", () => openPopup(addCardModal));
+addCardBtn.addEventListener("click", () => {
+  addCardForm.reset(); // Reset form fields
+  openPopup(addCardModal);
+  formValidators[addCardForm.getAttribute("id")].resetValidation(); // Reset validation state
+});
 
 /*
  * ==============================================================================
@@ -177,8 +196,7 @@ addCardForm.addEventListener("submit", (e) => {
     name: addCardTitleInput.value,
     link: addCardLinkInput.value,
   };
-  const card = new Card(newCardData, "#card-template", handleImageClick);
-  const cardElement = card.generateCard();
+  const cardElement = createCard(newCardData);
   cardListEl.prepend(cardElement);
   addCardTitleInput.value = "";
   addCardLinkInput.value = "";
