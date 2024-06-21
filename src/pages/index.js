@@ -1,5 +1,6 @@
 import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
+import Section from "../components/Section.js"; // Import the Section class
 import "./index.css";
 
 const initialCards = [
@@ -69,15 +70,22 @@ function createCard(cardData) {
 
 /*
  * ==============================================================================
- * Initialize cards
+ * Initialize cards using Section class
  * ==============================================================================
  */
 
-const cardListEl = document.querySelector(".cards__list");
-initialCards.forEach((cardData) => {
-  const cardElement = createCard(cardData);
-  cardListEl.append(cardElement);
-});
+const section = new Section(
+  {
+    items: initialCards,
+    renderer: (cardData) => {
+      const cardElement = createCard(cardData);
+      section.addItem(cardElement);
+    },
+  },
+  ".cards__list"
+);
+
+section.renderItems();
 
 /*
  * ==============================================================================
@@ -198,7 +206,7 @@ addCardForm.addEventListener("submit", (e) => {
     link: addCardLinkInput.value,
   };
   const cardElement = createCard(newCardData);
-  cardListEl.prepend(cardElement);
+  section.addItem(cardElement);
   addCardTitleInput.value = "";
   addCardLinkInput.value = "";
   closePopup(addCardModal);
