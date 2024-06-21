@@ -115,27 +115,3 @@ document.getElementById("profile-edit-button").addEventListener("click", () => {
 document.querySelector(".profile__add-button").addEventListener("click", () => {
   addCardPopup.open();
 });
-
-/*
- * ==============================================================================
- * Event listener for closing the image modal
- * ==============================================================================
- */
-document
-  .querySelector("#modal-image-close-button")
-  .addEventListener("click", () => {
-    popupWithImage.close();
-  });
-
-/*
- * ==============================================================================
- * Close modals by clicking outside the content
- * ==============================================================================
- */
-document.querySelectorAll(".modal").forEach((modal) => {
-  modal.addEventListener("mousedown", (e) => {
-    if (e.target.classList.contains("modal_opened")) {
-      modal.classList.remove("modal_opened");
-    }
-  });
-});
