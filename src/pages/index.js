@@ -7,30 +7,15 @@ import UserInfo from "../components/UserInfo.js";
 import { initialCards, formValidationOptions } from "../utils/constants.js";
 import "./index.css";
 
-/*
- * ==============================================================================
- * Function to handle image click
- * ==============================================================================
- */
 function handleImageClick(name, link) {
   popupWithImage.open({ name, link });
 }
 
-/*
- * ==============================================================================
- * Function to create a card
- * ==============================================================================
- */
 function createCard(cardData) {
   const card = new Card(cardData, "#card-template", handleImageClick);
   return card.generateCard();
 }
 
-/*
- * ==============================================================================
- * Initialize cards using Section class
- * ==============================================================================
- */
 const section = new Section(
   {
     items: initialCards,
@@ -44,11 +29,6 @@ const section = new Section(
 
 section.renderItems();
 
-/*
- * ==============================================================================
- * Initialize form validators
- * ==============================================================================
- */
 const formValidators = {};
 document
   .querySelectorAll(formValidationOptions.formSelector)
@@ -58,21 +38,11 @@ document
     formValidators[formElement.getAttribute("id")] = formValidator;
   });
 
-/*
- * ==============================================================================
- * Instantiate UserInfo class
- * ==============================================================================
- */
 const userInfo = new UserInfo({
   nameSelector: "#profile-title",
   jobSelector: "#profile-desc",
 });
 
-/*
- * ==============================================================================
- * Instantiate PopupWithForm for Edit Profile and Add Card modals
- * ==============================================================================
- */
 const profileEditPopup = new PopupWithForm(
   "#profile-edit-modal",
   (inputValues) => {
@@ -81,18 +51,23 @@ const profileEditPopup = new PopupWithForm(
       job: inputValues.description,
     });
     profileEditPopup.close();
-  }
+  },
+  formValidators["edit-profile-form"]
 );
 
-const addCardPopup = new PopupWithForm("#add-card-modal", (inputValues) => {
-  const newCardData = {
-    name: inputValues.title,
-    link: inputValues.link,
-  };
-  const cardElement = createCard(newCardData);
-  section.addItem(cardElement);
-  addCardPopup.close();
-});
+const addCardPopup = new PopupWithForm(
+  "#add-card-modal",
+  (inputValues) => {
+    const newCardData = {
+      name: inputValues.title,
+      link: inputValues.link,
+    };
+    const cardElement = createCard(newCardData);
+    section.addItem(cardElement);
+    addCardPopup.close();
+  },
+  formValidators["add-card-form"]
+);
 
 profileEditPopup.setEventListeners();
 addCardPopup.setEventListeners();
@@ -100,11 +75,6 @@ addCardPopup.setEventListeners();
 const popupWithImage = new PopupWithImage("#modal-image-display");
 popupWithImage.setEventListeners();
 
-/*
- * ==============================================================================
- * Event listeners for opening modals
- * ==============================================================================
- */
 document.getElementById("profile-edit-button").addEventListener("click", () => {
   const userData = userInfo.getUserInfo();
   document.getElementById("profile-title-input").value = userData.name;
@@ -114,18 +84,4 @@ document.getElementById("profile-edit-button").addEventListener("click", () => {
 
 document.querySelector(".profile__add-button").addEventListener("click", () => {
   addCardPopup.open();
-});
-
-document
-  .querySelector("#modal-image-close-button")
-  .addEventListener("click", () => {
-    popupWithImage.close();
-  });
-
-document.querySelectorAll(".modal").forEach((modal) => {
-  modal.addEventListener("mousedown", (e) => {
-    if (e.target.classList.contains("modal_opened")) {
-      modal.classList.remove("modal_opened");
-    }
-  });
 });
