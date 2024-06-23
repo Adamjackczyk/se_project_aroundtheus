@@ -115,3 +115,17 @@ document.getElementById("profile-edit-button").addEventListener("click", () => {
 document.querySelector(".profile__add-button").addEventListener("click", () => {
   addCardPopup.open();
 });
+
+document
+  .querySelector("#modal-image-close-button")
+  .addEventListener("click", () => {
+    popupWithImage.close();
+  });
+
+document.querySelectorAll(".modal").forEach((modal) => {
+  modal.addEventListener("mousedown", (e) => {
+    if (e.target.classList.contains("modal_opened")) {
+      modal.classList.remove("modal_opened");
+    }
+  });
+});
