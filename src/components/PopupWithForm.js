@@ -1,11 +1,13 @@
 import Popup from "./Popup.js";
 
 export default class PopupWithForm extends Popup {
-  constructor(popupSelector, handleFormSubmit, formValidator) {
+  constructor(popupSelector, handleFormSubmit, formValidator = null) {
     super(popupSelector);
     this._handleFormSubmit = handleFormSubmit;
     this._form = this._popup.querySelector(".modal__form");
     this._formValidator = formValidator;
+    this._submitButton = this._form.querySelector(".modal__button");
+    this._submitButtonText = this._submitButton.textContent;
   }
 
   _getInputValues() {
@@ -20,14 +22,48 @@ export default class PopupWithForm extends Popup {
     super.setEventListeners();
     this._form.addEventListener("submit", (event) => {
       event.preventDefault();
-      this._handleFormSubmit(this._getInputValues());
+      this._renderLoading(true); // Show "Saving..." text
+      this._handleFormSubmit(this._getInputValues())
+        .then(() => {
+          this._renderLoading(false); // Reset to original text
+          this.close(); // Close the popup after submission
+        })
+        .catch(() => {
+          this._renderLoading(false); // Ensure to reset in case of error
+        });
       this._form.reset();
-      this._formValidator.toggleButtonState();
+      if (this._formValidator) {
+        this._formValidator.toggleButtonState();
+      }
     });
+  }
+
+  _renderLoading(isLoading) {
+    if (isLoading) {
+      this._submitButton.textContent = "Saving...";
+    } else {
+      this._submitButton.textContent = this._submitButtonText;
+    }
   }
 
   open() {
     super.open();
-    this._formValidator.resetValidation();
+    if (this._formValidator) {
+      this._formValidator.resetValidation();
+    }
+    this._renderLoading(false); // Reset button text to default when the popup is opened
+  }
+
+  close() {
+    super.close();
+    this._form.reset();
+    if (this._formValidator) {
+      this._formValidator.toggleButtonState();
+    }
+    this._renderLoading(false); // Reset button text to default when the popup is closed
+  }
+
+  setSubmitAction(action) {
+    this._handleFormSubmit = action;
   }
 }

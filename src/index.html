@@ -17,11 +17,14 @@
       </header>
       <main class="content">
         <section class="profile page__section">
-          <img
-            src="<%= require('./images/jacques-cousteau.jpg')%>"
-            alt="Jacques Cousteau"
-            class="profile__pic"
-          />
+          <div class="profile__pic-container">
+            <img
+              src="<%= require('./images/jacques-cousteau.jpg')%>"
+              alt="Jacques Cousteau"
+              class="profile__pic"
+            />
+            <button class="profile__pic-edit-button"></button>
+          </div>
           <div class="profile__info">
             <h1 class="profile__title" id="profile-title">Jacques Cousteau</h1>
             <button
@@ -143,6 +146,47 @@
         ></button>
         <img class="modal__image" src="" alt="" />
         <p class="modal__image-label"></p>
+      </div>
+    </div>
+
+    <!-- modal update avatar -->
+    <div class="modal" id="update-avatar-modal">
+      <div class="modal__container">
+        <button class="modal__close" id="update-avatar-exit-button"></button>
+        <p class="modal__heading">Change Profile Picture</p>
+        <form action="#" class="modal__form" id="update-avatar-form" novalidate>
+          <input
+            class="modal__input"
+            type="url"
+            name="avatar"
+            placeholder="Image link"
+            id="avatar-link-input"
+            required
+          />
+          <span
+            class="modal__error modal__error_visible"
+            id="avatar-link-input-error"
+          ></span>
+          <button
+            disabled
+            type="submit"
+            class="modal__button modal__button_disabled"
+          >
+            Save
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- modal delete card -->
+
+    <div class="modal" id="delete-card-modal">
+      <div class="modal__container">
+        <button class="modal__close" id="delete-card-exit-button"></button>
+        <p class="modal__heading">Are you sure?</p>
+        <form action="#" class="modal__form" id="delete-card-form" novalidate>
+          <button type="submit" class="modal__button">Yes, delete it</button>
+        </form>
       </div>
     </div>
 

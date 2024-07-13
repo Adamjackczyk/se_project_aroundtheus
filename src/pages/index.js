@@ -4,21 +4,66 @@ import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
-import { initialCards, formValidationOptions } from "../utils/constants.js";
+import { formValidationOptions, initialCards } from "../utils/constants.js";
+import Api from "../utils/Api.js";
 import "./index.css";
+
+// Initialize the API
+const api = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1",
+  headers: {
+    authorization: "6b68a929-d08e-4cf9-a697-37317d009dd7",
+    "Content-Type": "application/json",
+  },
+});
 
 function handleImageClick(name, link) {
   popupWithImage.open({ name, link });
 }
 
 function createCard(cardData) {
-  const card = new Card(cardData, "#card-template", handleImageClick);
+  const card = new Card(
+    cardData,
+    "#card-template",
+    handleImageClick,
+    handleDeleteClick,
+    handleLikeClick
+  );
   return card.generateCard();
 }
 
+function handleDeleteClick(card) {
+  deleteCardPopup.open();
+  deleteCardPopup.setSubmitAction(() => {
+    api
+      .deleteCard(card._id)
+      .then(() => {
+        card._deleteCard();
+        deleteCardPopup.close();
+      })
+      .catch((err) => {
+        console.error("Failed to delete card:", err);
+      });
+  });
+}
+
+function handleLikeClick(card) {
+  const likeAction = card._isLiked
+    ? api.unlikeCard(card._id)
+    : api.likeCard(card._id);
+  likeAction
+    .then(() => {
+      card.toggleLikeButton();
+    })
+    .catch((err) => {
+      console.error("Failed to update like status:", err);
+    });
+}
+
+// Initialize the section with an empty array initially
 const section = new Section(
   {
-    items: initialCards,
+    items: [],
     renderer: (cardData) => {
       const cardElement = createCard(cardData);
       section.addItem(cardElement);
@@ -26,8 +71,6 @@ const section = new Section(
   },
   ".cards__list"
 );
-
-section.renderItems();
 
 const formValidators = {};
 document
@@ -41,16 +84,30 @@ document
 const userInfo = new UserInfo({
   nameSelector: "#profile-title",
   jobSelector: "#profile-desc",
+  avatarSelector: ".profile__pic",
 });
 
 const profileEditPopup = new PopupWithForm(
   "#profile-edit-modal",
   (inputValues) => {
-    userInfo.setUserInfo({
-      name: inputValues.title,
-      job: inputValues.description,
-    });
-    profileEditPopup.close();
+    api
+      .setUserInfo({
+        name: inputValues.title,
+        about: inputValues.description,
+      })
+      .then((updatedUserInfo) => {
+        console.log("Updated user info:", updatedUserInfo);
+
+        userInfo.setUserInfo({
+          name: updatedUserInfo.name,
+          job: updatedUserInfo.about,
+          avatar: updatedUserInfo.avatar,
+        });
+        profileEditPopup.close();
+      })
+      .catch((err) => {
+        console.error("Failed to update user info: ", err);
+      });
   },
   formValidators["edit-profile-form"]
 );
@@ -58,19 +115,54 @@ const profileEditPopup = new PopupWithForm(
 const addCardPopup = new PopupWithForm(
   "#add-card-modal",
   (inputValues) => {
-    const newCardData = {
-      name: inputValues.title,
-      link: inputValues.link,
-    };
-    const cardElement = createCard(newCardData);
-    section.addItem(cardElement);
-    addCardPopup.close();
+    api
+      .addNewCard({
+        name: inputValues.title,
+        link: inputValues.link,
+      })
+      .then((newCard) => {
+        console.log("New card added:", newCard);
+        const cardElement = createCard(newCard);
+        section.addItem(cardElement);
+        addCardPopup.close();
+      })
+      .catch((err) => {
+        console.error("Failed to add card:", err);
+      });
   },
   formValidators["add-card-form"]
 );
 
+// Popup for updating the avatar
+const updateAvatarPopup = new PopupWithForm(
+  "#update-avatar-modal",
+  (inputValues) => {
+    api
+      .updateUserAvatar(inputValues.avatar)
+      .then((updatedUserInfo) => {
+        console.log("Updated user avatar:", updatedUserInfo);
+
+        userInfo.setUserInfo({
+          name: updatedUserInfo.name,
+          job: updatedUserInfo.about,
+          avatar: updatedUserInfo.avatar,
+        });
+        updateAvatarPopup.close();
+      })
+      .catch((err) => {
+        console.error("Failed to update user avatar: ", err);
+      });
+  },
+  formValidators["update-avatar-form"]
+);
+
+// No form validation for deleteCardPopup
+const deleteCardPopup = new PopupWithForm("#delete-card-modal", () => {}, null);
+
 profileEditPopup.setEventListeners();
 addCardPopup.setEventListeners();
+updateAvatarPopup.setEventListeners();
+deleteCardPopup.setEventListeners();
 
 const popupWithImage = new PopupWithImage("#modal-image-display");
 popupWithImage.setEventListeners();
@@ -85,3 +177,41 @@ document.getElementById("profile-edit-button").addEventListener("click", () => {
 document.querySelector(".profile__add-button").addEventListener("click", () => {
   addCardPopup.open();
 });
+
+document
+  .querySelector(".profile__pic-container")
+  .addEventListener("click", () => updateAvatarPopup.open());
+
+// Fetch user info and initial cards from the server and render them
+api
+  .getAppInfo()
+  .then(([userData, cards]) => {
+    console.log("User data:", userData);
+    console.log("Cards data:", cards);
+
+    userInfo.setUserInfo({
+      name: userData.name,
+      job: userData.about,
+      avatar: userData.avatar,
+    });
+    section.renderItems(cards);
+
+    // Upload initial cards if the server has none
+    if (cards.length === 0) {
+      initialCards.forEach((card) => {
+        api
+          .addNewCard(card)
+          .then((newCard) => {
+            console.log("New card uploaded:", newCard);
+            const cardElement = createCard(newCard);
+            section.addItem(cardElement);
+          })
+          .catch((err) => {
+            console.error("Failed to upload card:", err);
+          });
+      });
+    }
+  })
+  .catch((err) => {
+    console.error("Failed to fetch app info:", err);
+  });
