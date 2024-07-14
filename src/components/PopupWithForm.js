@@ -26,15 +26,15 @@ export default class PopupWithForm extends Popup {
       this._handleFormSubmit(this._getInputValues())
         .then(() => {
           this._renderLoading(false); // Reset to original text
+          this._form.reset();
+          if (this._formValidator) {
+            this._formValidator.toggleButtonState();
+          }
           this.close(); // Close the popup after submission
         })
         .catch(() => {
           this._renderLoading(false); // Ensure to reset in case of error
         });
-      this._form.reset();
-      if (this._formValidator) {
-        this._formValidator.toggleButtonState();
-      }
     });
   }
 

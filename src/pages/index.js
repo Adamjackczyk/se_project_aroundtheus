@@ -35,7 +35,7 @@ function createCard(cardData) {
 function handleDeleteClick(card) {
   deleteCardPopup.open();
   deleteCardPopup.setSubmitAction(() => {
-    api
+    return api
       .deleteCard(card._id)
       .then(() => {
         card._deleteCard();
@@ -51,6 +51,7 @@ function handleLikeClick(card) {
   const likeAction = card._isLiked
     ? api.unlikeCard(card._id)
     : api.likeCard(card._id);
+
   likeAction
     .then(() => {
       card.toggleLikeButton();
@@ -90,23 +91,17 @@ const userInfo = new UserInfo({
 const profileEditPopup = new PopupWithForm(
   "#profile-edit-modal",
   (inputValues) => {
-    api
+    return api
       .setUserInfo({
         name: inputValues.title,
         about: inputValues.description,
       })
       .then((updatedUserInfo) => {
-        console.log("Updated user info:", updatedUserInfo);
-
         userInfo.setUserInfo({
           name: updatedUserInfo.name,
           job: updatedUserInfo.about,
           avatar: updatedUserInfo.avatar,
         });
-        profileEditPopup.close();
-      })
-      .catch((err) => {
-        console.error("Failed to update user info: ", err);
       });
   },
   formValidators["edit-profile-form"]
@@ -115,19 +110,14 @@ const profileEditPopup = new PopupWithForm(
 const addCardPopup = new PopupWithForm(
   "#add-card-modal",
   (inputValues) => {
-    api
+    return api
       .addNewCard({
         name: inputValues.title,
         link: inputValues.link,
       })
       .then((newCard) => {
-        console.log("New card added:", newCard);
         const cardElement = createCard(newCard);
         section.addItem(cardElement);
-        addCardPopup.close();
-      })
-      .catch((err) => {
-        console.error("Failed to add card:", err);
       });
   },
   formValidators["add-card-form"]
@@ -137,21 +127,13 @@ const addCardPopup = new PopupWithForm(
 const updateAvatarPopup = new PopupWithForm(
   "#update-avatar-modal",
   (inputValues) => {
-    api
-      .updateUserAvatar(inputValues.avatar)
-      .then((updatedUserInfo) => {
-        console.log("Updated user avatar:", updatedUserInfo);
-
-        userInfo.setUserInfo({
-          name: updatedUserInfo.name,
-          job: updatedUserInfo.about,
-          avatar: updatedUserInfo.avatar,
-        });
-        updateAvatarPopup.close();
-      })
-      .catch((err) => {
-        console.error("Failed to update user avatar: ", err);
+    return api.updateUserAvatar(inputValues.avatar).then((updatedUserInfo) => {
+      userInfo.setUserInfo({
+        name: updatedUserInfo.name,
+        job: updatedUserInfo.about,
+        avatar: updatedUserInfo.avatar,
       });
+    });
   },
   formValidators["update-avatar-form"]
 );
@@ -180,21 +162,20 @@ document.querySelector(".profile__add-button").addEventListener("click", () => {
 
 document
   .querySelector(".profile__pic-container")
-  .addEventListener("click", () => updateAvatarPopup.open());
+  .addEventListener("click", () => {
+    updateAvatarPopup.open();
+  });
 
 // Fetch user info and initial cards from the server and render them
 api
   .getAppInfo()
   .then(([userData, cards]) => {
-    console.log("User data:", userData);
-    console.log("Cards data:", cards);
-
     userInfo.setUserInfo({
       name: userData.name,
       job: userData.about,
       avatar: userData.avatar,
     });
-    section.renderItems(cards);
+    section.renderItems(cards.reverse());
 
     // Upload initial cards if the server has none
     if (cards.length === 0) {
@@ -202,7 +183,6 @@ api
         api
           .addNewCard(card)
           .then((newCard) => {
-            console.log("New card uploaded:", newCard);
             const cardElement = createCard(newCard);
             section.addItem(cardElement);
           })
