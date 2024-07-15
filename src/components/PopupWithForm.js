@@ -29,11 +29,13 @@ export default class PopupWithForm extends Popup {
           if (this.formValidator) {
             this.formValidator.toggleButtonState();
           }
-          this.renderLoading(false); // Reset to original text
           this.close(); // Close the popup after submission
         })
-        .catch(() => {
-          this.renderLoading(false); // Ensure to reset in case of error
+        .catch((err) => {
+          console.error(err); // Log the error
+        })
+        .finally(() => {
+          this.renderLoading(false); // Reset to original text
         });
     });
   }
