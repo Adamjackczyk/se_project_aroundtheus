@@ -8,6 +8,7 @@ export default class PopupWithForm extends Popup {
     this._formValidator = formValidator;
     this._submitButton = this._form.querySelector(".modal__button");
     this._submitButtonText = this._submitButton.textContent;
+    this._wasSubmitted = false; // Track whether the form was submitted
   }
 
   _getInputValues() {
@@ -30,6 +31,7 @@ export default class PopupWithForm extends Popup {
           if (this._formValidator) {
             this._formValidator.toggleButtonState();
           }
+          this._wasSubmitted = true; // Mark the form as submitted
           this.close(); // Close the popup after submission
         })
         .catch(() => {
@@ -56,7 +58,10 @@ export default class PopupWithForm extends Popup {
 
   close() {
     super.close();
-    this._form.reset();
+    if (this._wasSubmitted) {
+      this._form.reset(); // Only reset the form if it was submitted
+      this._wasSubmitted = false; // Reset the submitted state
+    }
     if (this._formValidator) {
       this._formValidator.toggleButtonState();
     }
