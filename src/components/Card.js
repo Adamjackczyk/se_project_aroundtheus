@@ -8,14 +8,15 @@ export default class Card {
   ) {
     this._name = data.name;
     this._link = data.link;
-    this._id = data._id; // add this to keep track of card id
+    this._id = data._id; // Keep track of card ID
     this._cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
     this._handleDeleteClick = handleDeleteClick;
     this._handleLikeClick = handleLikeClick;
-    this._isLiked = data.isLiked || false; // add this to keep track of like status
+    this._isLiked = data.isLiked || false; // Keep track of like status
   }
 
+  // Get the card template from the DOM and clone it
   _getTemplate() {
     const cardElement = document
       .querySelector(this._cardSelector)
@@ -25,6 +26,7 @@ export default class Card {
     return cardElement;
   }
 
+  // Set up event listeners for the card
   _setEventListeners() {
     this._cardImageElement.addEventListener("click", () => {
       this._handleImageClick(this._name, this._link);
@@ -43,6 +45,7 @@ export default class Card {
       });
   }
 
+  // Toggle the like button's active state
   toggleLikeButton() {
     this._isLiked = !this._isLiked;
     this._cardElement
@@ -50,11 +53,13 @@ export default class Card {
       .classList.toggle("card__like-button_active");
   }
 
+  // Remove the card from the DOM
   _deleteCard() {
     this._cardElement.remove();
     this._cardElement = null;
   }
 
+  // Generate the card element and set up event listeners
   generateCard() {
     this._cardElement = this._getTemplate();
     this._cardImageElement = this._cardElement.querySelector(".card__image");

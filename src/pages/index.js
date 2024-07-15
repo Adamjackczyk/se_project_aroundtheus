@@ -48,12 +48,13 @@ function handleDeleteClick(card) {
 }
 
 function handleLikeClick(card) {
-  const likeAction = card.isLiked
+  const likeAction = card._isLiked
     ? api.unlikeCard(card._id)
     : api.likeCard(card._id);
 
   likeAction
-    .then(() => {
+    .then((updatedCard) => {
+      console.log("Updated card data:", updatedCard); // Log the server response
       card.toggleLikeButton();
     })
     .catch((err) => {
