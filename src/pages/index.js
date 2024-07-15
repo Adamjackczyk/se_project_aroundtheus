@@ -48,7 +48,7 @@ function handleDeleteClick(card) {
 }
 
 function handleLikeClick(card) {
-  const likeAction = card._isLiked
+  const likeAction = card.isLiked
     ? api.unlikeCard(card._id)
     : api.likeCard(card._id);
 

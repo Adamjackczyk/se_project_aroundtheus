@@ -57,7 +57,6 @@ export default class PopupWithForm extends Popup {
 
   close() {
     super.close();
-    // Form reset and button state toggle are now handled during the request
   }
 
   setSubmitAction(action) {

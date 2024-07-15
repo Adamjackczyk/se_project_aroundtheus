@@ -1,70 +1,70 @@
 export default class Api {
   constructor(options) {
-    this._baseUrl = options.baseUrl;
-    this._headers = options.headers;
+    this.baseUrl = options.baseUrl;
+    this.headers = options.headers;
   }
 
   // A generic method for making requests and checking responses
-  _request(url, options) {
-    return fetch(url, options).then(this._checkResponse);
+  request(url, options) {
+    return fetch(url, options).then(this.checkResponse);
   }
 
-  // Other methods using the _request method
+  // Other methods using the request method
   getInitialCards() {
-    return this._request(`${this._baseUrl}/cards`, {
+    return this.request(`${this.baseUrl}/cards`, {
       method: "GET",
-      headers: this._headers,
+      headers: this.headers,
     });
   }
 
   getUserInfo() {
-    return this._request(`${this._baseUrl}/users/me`, {
+    return this.request(`${this.baseUrl}/users/me`, {
       method: "GET",
-      headers: this._headers,
+      headers: this.headers,
     });
   }
 
   setUserInfo(data) {
-    return this._request(`${this._baseUrl}/users/me`, {
+    return this.request(`${this.baseUrl}/users/me`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: this.headers,
       body: JSON.stringify(data),
     });
   }
 
   addNewCard(data) {
-    return this._request(`${this._baseUrl}/cards`, {
+    return this.request(`${this.baseUrl}/cards`, {
       method: "POST",
-      headers: this._headers,
+      headers: this.headers,
       body: JSON.stringify(data),
     });
   }
 
   deleteCard(cardId) {
-    return this._request(`${this._baseUrl}/cards/${cardId}`, {
+    return this.request(`${this.baseUrl}/cards/${cardId}`, {
       method: "DELETE",
-      headers: this._headers,
+      headers: this.headers,
     });
   }
 
   likeCard(cardId) {
-    return this._request(`${this._baseUrl}/cards/${cardId}/likes`, {
+    return this.request(`${this.baseUrl}/cards/${cardId}/likes`, {
       method: "PUT",
-      headers: this._headers,
+      headers: this.headers,
     });
   }
 
   unlikeCard(cardId) {
-    return this._request(`${this._baseUrl}/cards/${cardId}/likes`, {
+    return this.request(`${this.baseUrl}/cards/${cardId}/likes`, {
       method: "DELETE",
-      headers: this._headers,
+      headers: this.headers,
     });
   }
 
   updateUserAvatar(avatarUrl) {
-    return this._request(`${this._baseUrl}/users/me/avatar`, {
+    return this.request(`${this.baseUrl}/users/me/avatar`, {
       method: "PATCH",
-      headers: this._headers,
+      headers: this.headers,
       body: JSON.stringify({ avatar: avatarUrl }),
     });
   }
@@ -73,7 +73,7 @@ export default class Api {
     return Promise.all([this.getUserInfo(), this.getInitialCards()]);
   }
 
-  _checkResponse(res) {
+  checkResponse(res) {
     if (res.ok) {
       return res.json();
     }
