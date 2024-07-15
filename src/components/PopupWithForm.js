@@ -58,10 +58,7 @@ export default class PopupWithForm extends Popup {
 
   close() {
     super.close();
-    if (this.formValidator) {
-      this.formValidator.toggleButtonState();
-    }
-    this.renderLoading(false); // Reset button text to default when the popup is closed
+    // Form reset and button state toggle are now handled during the request
   }
 
   setSubmitAction(action) {
