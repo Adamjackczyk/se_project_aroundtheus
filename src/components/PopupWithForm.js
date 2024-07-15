@@ -53,7 +53,6 @@ export default class PopupWithForm extends Popup {
     if (this.formValidator) {
       this.formValidator.resetValidation();
     }
-    this.renderLoading(false); // Reset button text to default when the popup is opened
   }
 
   close() {
