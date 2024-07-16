@@ -11,15 +11,20 @@ export default class PopupWithForm extends Popup {
   }
 
   getInputValues() {
-    this.formValues = {};
+    const formValues = {};
     this.form.querySelectorAll(".modal__input").forEach((input) => {
-      this.formValues[input.name] = input.value;
+      formValues[input.name] = input.value;
     });
-    return this.formValues;
+    return formValues;
+  }
+
+  setInputValues(data) {
+    this.form.querySelectorAll(".modal__input").forEach((input) => {
+      input.value = data[input.name];
+    });
   }
 
   setEventListeners() {
-    super.setEventListeners();
     this.form.addEventListener("submit", (event) => {
       event.preventDefault();
       this.renderLoading(true); // Show "Saving..." text
@@ -29,15 +34,16 @@ export default class PopupWithForm extends Popup {
           if (this.formValidator) {
             this.formValidator.toggleButtonState();
           }
-          this.close(); // Close the popup after submission
+          this.close();
         })
         .catch((err) => {
-          console.error(err); // Log the error
+          console.error("Form submission error:", err);
         })
         .finally(() => {
-          this.renderLoading(false); // Reset to original text
+          this.renderLoading(false);
         });
     });
+    super.setEventListeners();
   }
 
   renderLoading(isLoading) {
