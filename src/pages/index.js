@@ -179,19 +179,19 @@ api
     section.renderItems(cards.reverse());
 
     // Upload initial cards if the server has none
-    if (cards.length === 0) {
-      initialCards.forEach((card) => {
-        api
-          .addNewCard(card)
-          .then((newCard) => {
-            const cardElement = createCard(newCard);
-            section.addItem(cardElement);
-          })
-          .catch((err) => {
-            console.error("Failed to upload card:", err);
-          });
-      });
-    }
+    // if (cards.length === 0) {
+    //   initialCards.forEach((card) => {
+    //     api
+    //       .addNewCard(card)
+    //       .then((newCard) => {
+    //         const cardElement = createCard(newCard);
+    //         section.addItem(cardElement);
+    //       })
+    //       .catch((err) => {
+    //         console.error("Failed to upload card:", err);
+    //       });
+    //   });
+    // }
   })
   .catch((err) => {
     console.error("Failed to fetch app info:", err);
