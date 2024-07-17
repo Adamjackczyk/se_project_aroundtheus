@@ -36,9 +36,9 @@ function handleDeleteClick(card) {
   deleteCardPopup.open();
   deleteCardPopup.setSubmitAction(() => {
     return api
-      .deleteCard(card._id)
+      .deleteCard(card.id)
       .then(() => {
-        card._deleteCard();
+        card.deleteCard();
         deleteCardPopup.close();
       })
       .catch((err) => {
@@ -48,9 +48,9 @@ function handleDeleteClick(card) {
 }
 
 function handleLikeClick(card) {
-  const likeAction = card._isLiked
-    ? api.unlikeCard(card._id)
-    : api.likeCard(card._id);
+  const likeAction = card.isLiked
+    ? api.unlikeCard(card.id)
+    : api.likeCard(card.id);
 
   likeAction
     .then((updatedCard) => {
