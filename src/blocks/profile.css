@@ -16,6 +16,13 @@
   margin-right: auto;
 }
 
+.profile__pic-container {
+  position: relative;
+  height: 120px;
+  width: 120px;
+  margin-right: 30px;
+}
+
 .profile__pic {
   border-radius: 50%;
   width: 120px;
@@ -23,6 +30,33 @@
   object-fit: cover;
   object-position: center;
   margin-right: 30px;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.profile__pic-container:hover .profile__pic {
+  opacity: 60%;
+  cursor: pointer;
+}
+
+.profile__pic-edit-button {
+  background: transparent url(../images/Pfp_edit.svg) center no-repeat;
+  border: none;
+  border-radius: 50%;
+  height: 120px;
+  width: 120px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: 30px;
+  transform: translate(-50%, -50%);
+  z-index: 69;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.profile__pic-edit-button:hover {
+  opacity: 1;
 }
 
 .profile__title {
